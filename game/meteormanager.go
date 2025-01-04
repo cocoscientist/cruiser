@@ -17,7 +17,7 @@ type MeteorManager struct {
 
 func NewMeteors(baseSpeed float64, accelerationConstant float64) *MeteorManager {
 	mm := &MeteorManager{}
-	mm.meteorSpawnTimer = NewTimer(2500 * time.Millisecond)
+	mm.meteorSpawnTimer = NewTimer(3000 * time.Millisecond)
 	mm.baseSpeed = baseSpeed
 	mm.accelerationConstant = accelerationConstant
 	mm.score = 0
@@ -47,6 +47,7 @@ func (mm *MeteorManager) GetClosestMeteor(x float64) *Meteor {
 	for _, meteor := range mm.Meteors {
 		if meteor.X > x {
 			m = meteor
+			break
 		}
 	}
 	return m
@@ -65,4 +66,7 @@ func (mm *MeteorManager) addMeteor() {
 func (mm *MeteorManager) removeMeteor(position int) {
 	mm.Meteors = append(mm.Meteors[:position], mm.Meteors[position+1:]...)
 	mm.score++
+	if mm.score%5 == 0 {
+		mm.meteorSpawnTimer.AdjustTicker(0.95 * mm.meteorSpawnTimer.targetTicks)
+	}
 }

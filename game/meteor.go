@@ -3,8 +3,6 @@ package game
 import (
 	"cruiser/assets"
 	"math/rand"
-
-	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
@@ -14,9 +12,7 @@ const (
 
 type Meteor struct {
 	Entity
-	rotation      float64
-	rotationSpeed float64
-	weight        int
+	weight int
 }
 
 func NewMeteor() *Meteor {
@@ -29,26 +25,11 @@ func NewMeteor() *Meteor {
 		m.sprite = assets.LargeMeteorSprites[rand.Intn(len(assets.LargeMeteorSprites))]
 		m.weight = 8
 	}
-	m.X = 800 - float64(m.sprite.Bounds().Dx()/2)
-	m.Y = rand.Float64() * (600 - float64(m.sprite.Bounds().Dy()/2))
-	m.rotationSpeed = rotationSpeedMin + rand.Float64()*(rotationSpeedMax-rotationSpeedMin)
+	m.X = 800 + float64(m.getWidth()/2)
+	m.Y = m.getWidth()/2 + rand.Float64()*(600-float64(m.getWidth()))
 	return m
 }
 
 func (m *Meteor) Update(speed float64) {
 	m.X -= GetFrameValue(speed)
-	m.rotation += GetFrameValue(m.rotationSpeed)
-}
-
-func (m *Meteor) Draw(screen *ebiten.Image) {
-	halfW := m.getWidth() / 2
-	halfH := m.getHeight() / 2
-
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Rotate(m.rotation)
-
-	op.GeoM.Translate(-halfW, -halfH)
-	op.GeoM.Translate(m.X, m.Y)
-
-	screen.DrawImage(m.sprite, op)
 }

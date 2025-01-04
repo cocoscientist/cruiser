@@ -12,8 +12,8 @@ import (
 const (
 	screenWidth          = 800
 	screenHeight         = 600
-	baseSpeed            = 200
-	accelerationConstant = 100
+	baseSpeed            = 100
+	accelerationConstant = 10
 	playerX              = 75
 )
 
@@ -37,7 +37,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.bg.Draw(screen)
 
 	if !g.gameOver {
+		g.player.Draw(screen)
+		g.meteorManager.DrawAllMeteors(screen)
+		meteor := g.meteorManager.GetClosestMeteor(playerX)
 		text.Draw(screen, fmt.Sprintf("SCORE:%04d", g.meteorManager.score), assets.ScoreFont, 20, 60, color.White)
+		text.Draw(screen, fmt.Sprintf("Closest X:", meteor.X), assets.GameOverFont, 20, 500, color.White)
+		text.Draw(screen, fmt.Sprintf("Closest Y:", meteor.Y), assets.GameOverFont, 20, 550, color.White)
 	} else {
 		text.Draw(screen, fmt.Sprintf("FINAL SCORE: %04d", g.meteorManager.score), assets.GameOverFont, screenWidth/2-200, 90, color.White)
 		text.Draw(screen, fmt.Sprintf("GAME OVER!"), assets.GameOverFont, screenWidth/2-114, screenHeight/2-100, color.White)

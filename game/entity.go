@@ -25,9 +25,8 @@ func (e *Entity) getHeight() float64 {
 }
 
 func (e *Entity) Draw(screen *ebiten.Image) {
-	bounds := e.sprite.Bounds()
-	halfW := float64(bounds.Dx()) / 2
-	halfH := float64(bounds.Dy()) / 2
+	halfW := float64(e.getWidth()) / 2
+	halfH := float64(e.getHeight()) / 2
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-halfW, -halfH)
 	op.GeoM.Translate(e.X, e.Y)
@@ -35,5 +34,5 @@ func (e *Entity) Draw(screen *ebiten.Image) {
 }
 
 func (e *Entity) GetDistance(e2 *Entity) float64 {
-	return math.Sqrt((e.X-e2.X)*(e.X-e2.X) + (e.Y-e2.Y)*(e.Y-e2.Y))
+	return math.Sqrt(((e.X - e2.X) * (e.X - e2.X)) + ((e.Y - e2.Y) * (e.Y - e2.Y)))
 }

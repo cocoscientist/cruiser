@@ -31,3 +31,7 @@ func (t *Timer) IsReady() bool {
 func (t *Timer) Reset() {
 	t.currentTicks = 0
 }
+
+func (t *Timer) AdjustTicker(ticks float64) {
+	t.targetTicks = ticks
+}
