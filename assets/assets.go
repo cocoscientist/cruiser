@@ -4,6 +4,7 @@ import (
 	"embed"
 	"image"
 	_ "image/png"
+	"io/fs"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"golang.org/x/image/font"
@@ -16,6 +17,8 @@ var gameFontName = "PressStart2P-Regular.ttf"
 
 var PlayerSprite = mustLoadImage("player.png")
 var BackGroundSprite = mustLoadImage("background.png")
+var LargeMeteorSprites = mustLoadImages("meteorLarge/*.png")
+var SmallMeteorSprites = mustLoadImages("meteorSmall/*.png")
 var ScoreFont = mustLoadFont(gameFontName, 48, 32)
 var GameOverFont = mustLoadFont(gameFontName, 32, 56)
 
@@ -31,6 +34,20 @@ func mustLoadImage(name string) *ebiten.Image {
 		panic(err)
 	}
 	return ebiten.NewImageFromImage(img)
+}
+
+func mustLoadImages(name string) []*ebiten.Image {
+	matches, err := fs.Glob(assets, name)
+	if err != nil {
+		panic(err)
+	}
+
+	images := make([]*ebiten.Image, len(matches))
+	for i, match := range matches {
+		images[i] = mustLoadImage(match)
+	}
+
+	return images
 }
 
 func mustLoadFont(name string, size float64, dpi float64) font.Face {
