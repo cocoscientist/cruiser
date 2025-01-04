@@ -10,7 +10,6 @@ import (
 const (
 	rotationSpeedMin = -2
 	rotationSpeedMax = 2
-	baseSpeed        = 200
 )
 
 type Meteor struct {

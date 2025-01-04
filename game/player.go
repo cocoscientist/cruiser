@@ -1,14 +1,30 @@
 package game
 
+import (
+	"cruiser/assets"
+	"math"
+)
+
 type Player struct {
 	Entity
-	Vx float64
-	Vy float64
+	Vy                   float64
+	accelerationConstant float64
 }
 
-func (p *Player) Update(ax float64, ay float64) {
-	p.X += GetFrameValue(p.Vx)
+func NewPlayer(accelerationConstant float64, x float64, y float64) *Player {
+	p := &Player{}
+	p.accelerationConstant = accelerationConstant
+	p.Vy = 0
+	p.X = x
+	p.Y = y
+	p.sprite = assets.PlayerSprite
+	return p
+}
+
+func (p *Player) Update() {
 	p.Y += GetFrameValue(p.Vy)
-	p.Vx += GetFrameValue(ax)
-	p.Vy += GetFrameValue(ay)
+}
+
+func (p *Player) UpdateVerticalVelocity(meteor *Meteor) {
+	p.Vy += ((p.accelerationConstant) / (meteor.GetDistance(&p.Entity))) * ((meteor.Y - p.Y) / math.Sqrt(meteor.GetDistance(&p.Entity)))
 }
