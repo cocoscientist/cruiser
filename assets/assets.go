@@ -22,6 +22,7 @@ var LargeMeteorSprites = mustLoadImages("meteorLarge/*.png")
 var SmallMeteorSprites = mustLoadImages("meteorSmall/*.png")
 var ScoreFont = mustLoadFont(gameFontName, 48, 32)
 var GameOverFont = mustLoadFont(gameFontName, 32, 56)
+var TitleFont = mustLoadFont(gameFontName, 56, 56)
 
 func mustLoadImage(name string) *ebiten.Image {
 	f, err := assets.Open(name)
