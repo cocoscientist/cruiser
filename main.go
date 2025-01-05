@@ -9,6 +9,7 @@ import (
 func main() {
 	g := game.NewGame()
 
+	ebiten.SetWindowTitle("Cruiser")
 	err := ebiten.RunGame(g)
 	if err != nil {
 		panic(err)
