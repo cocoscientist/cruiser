@@ -15,6 +15,12 @@ type Meteor struct {
 	weight int
 }
 
+func FirstMeteor() *Meteor {
+	m := NewMeteor()
+	m.Y = 100
+	return m
+}
+
 func NewMeteor() *Meteor {
 	bw := rand.Float64()
 	m := &Meteor{}

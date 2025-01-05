@@ -17,7 +17,8 @@ type MeteorManager struct {
 
 func NewMeteors(baseSpeed float64, accelerationConstant float64) *MeteorManager {
 	mm := &MeteorManager{}
-	mm.meteorSpawnTimer = NewTimer(3000 * time.Millisecond)
+	mm.Meteors = append(mm.Meteors, FirstMeteor())
+	mm.meteorSpawnTimer = NewTimer(5000 * time.Millisecond)
 	mm.baseSpeed = baseSpeed
 	mm.accelerationConstant = accelerationConstant
 	mm.score = 0
@@ -39,7 +40,9 @@ func (mm *MeteorManager) UpdateAllMeteors() {
 }
 
 func (mm *MeteorManager) UpdateSpeed(meteor *Meteor, p *Player) {
-	mm.baseSpeed += ((mm.accelerationConstant) / (meteor.GetDistance(&p.Entity))) * ((meteor.X - p.X) / math.Sqrt(meteor.GetDistance(&p.Entity)))
+	if (&Meteor{}) != meteor {
+		mm.baseSpeed += ((mm.accelerationConstant) / (meteor.GetDistance(&p.Entity))) * ((meteor.X - p.X) / math.Sqrt(meteor.GetDistance(&p.Entity)))
+	}
 }
 
 func (mm *MeteorManager) GetClosestMeteor(x float64) *Meteor {
@@ -66,7 +69,5 @@ func (mm *MeteorManager) addMeteor() {
 func (mm *MeteorManager) removeMeteor(position int) {
 	mm.Meteors = append(mm.Meteors[:position], mm.Meteors[position+1:]...)
 	mm.score++
-	if mm.score%5 == 0 {
-		mm.meteorSpawnTimer.AdjustTicker(0.95 * mm.meteorSpawnTimer.targetTicks)
-	}
+	mm.meteorSpawnTimer.AdjustTicker(mm.meteorSpawnTimer.targetTicks * (0.999))
 }

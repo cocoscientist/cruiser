@@ -3,6 +3,8 @@ package game
 import (
 	"cruiser/assets"
 	"math"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type Player struct {
@@ -26,5 +28,29 @@ func (p *Player) Update() {
 }
 
 func (p *Player) UpdateVerticalVelocity(meteor *Meteor) {
-	p.Vy += ((p.accelerationConstant) / (meteor.GetDistance(&p.Entity))) * ((meteor.Y - p.Y) / math.Sqrt(meteor.GetDistance(&p.Entity)))
+	if (&Meteor{}) != meteor {
+		p.Vy += ((p.accelerationConstant) / (meteor.GetDistance(&p.Entity))) * ((meteor.Y - p.Y) / math.Sqrt(meteor.GetDistance(&p.Entity)))
+	} else {
+		p.Vy += 0
+	}
+}
+
+func (p *Player) Draw(screen *ebiten.Image, engineOn bool) {
+	op := &ebiten.DrawImageOptions{}
+	halfW := float64(p.getWidth()) / 2
+	halfH := float64(p.getHeight()) / 2
+	if !engineOn {
+		op.GeoM.Translate((2*p.X)-(halfW*2)-10, (2*p.Y)-(halfH*2)+65)
+		op.GeoM.Scale(0.5, 0.5)
+		screen.DrawImage(assets.ExhaustSprite, op)
+		op.GeoM.Scale(2.0, 2.0)
+		op.GeoM.Translate((2*halfW)-(2*p.X)+10, (2*halfH)-(2*p.Y)-65)
+	}
+	op.GeoM.Translate(-halfW, -halfH)
+	op.GeoM.Translate(p.X, p.Y)
+	screen.DrawImage(p.sprite, op)
+}
+
+func (p *Player) ResetVerticalVelocity() {
+	p.Vy = 0
 }

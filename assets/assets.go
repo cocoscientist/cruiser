@@ -17,6 +17,7 @@ var gameFontName = "PressStart2P-Regular.ttf"
 
 var PlayerSprite = mustLoadImage("player.png")
 var BackGroundSprite = mustLoadImage("background.png")
+var ExhaustSprite = mustLoadImage("effect.png")
 var LargeMeteorSprites = mustLoadImages("meteorLarge/*.png")
 var SmallMeteorSprites = mustLoadImages("meteorSmall/*.png")
 var ScoreFont = mustLoadFont(gameFontName, 48, 32)
